@@ -7,6 +7,8 @@ namespace EShop.Application
         public bool ValidateCardNumber(string cardNumber)
         {
             cardNumber = cardNumber.Replace(" ", "").Replace("-","");
+            if (!(cardNumber.Length >= 13 & cardNumber.Length <= 17))
+                return false;
             if (!cardNumber.All(char.IsDigit))
                 return false;
 
