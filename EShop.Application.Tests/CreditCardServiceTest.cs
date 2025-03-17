@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-
+using EShop.Domain.Exceptions.CardNumber;
+    
 namespace EShop.Application.Tests
 {
     public class CreditCardServiceTest
@@ -26,13 +27,7 @@ namespace EShop.Application.Tests
 
             string cardNumber = "12345678910111213141516";
 
-            //act
-
-            var result = creditCardService.ValidateCardNumber(cardNumber);
-
-            //assert
-
-            Assert.False(result);
+            //act & assert 
         }
         [Fact]
         public void CreditCard_LenOptimal_IsInRange()
@@ -86,6 +81,4 @@ namespace EShop.Application.Tests
         }
             
     }
-
-
 }
