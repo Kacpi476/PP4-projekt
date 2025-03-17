@@ -12,13 +12,11 @@ namespace EShop.Application.Tests
 
             string cardNumber = "1111";
 
-            //act
+            //act & assert
+            
+            Assert.Throws<CardNumberTooShortException>(() => creditCardService.ValidateCardNumber(cardNumber));
 
-            var result = creditCardService.ValidateCardNumber(cardNumber);
-
-            //assert
-
-            Assert.False(result);
+            
         }
         [Fact]
         public void CreditCard_LenOptimal_IsTooLong()
