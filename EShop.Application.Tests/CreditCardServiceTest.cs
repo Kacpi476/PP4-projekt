@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using EShop.Domain.Exceptions.CardNumber;
     
 namespace EShop.Application.Tests
@@ -25,9 +24,10 @@ namespace EShop.Application.Tests
             // arrange
             var creditCardService = new CreditCardService();
 
-            string cardNumber = "12345678910111213141516";
+            string cardNumber = "12345678987654321345678321";
 
             //act & assert 
+            Assert.Throws<CardNumberTooLongException>(() => creditCardService.ValidateCardNumber(cardNumber));
         }
         [Fact]
         public void CreditCard_LenOptimal_IsInRange()
@@ -78,6 +78,17 @@ namespace EShop.Application.Tests
             var creditCardService = new CreditCardService();
             var result = creditCardService.GetCardType(cardNumber);
             Assert.Equal(expectedResult, result);
+        }
+        
+        [Fact]
+        public void GetCardType_ShouldThrowCardNumberInvalidException()
+        {
+            // arrange
+            var creditCardService = new CreditCardService();
+            string cardNumber = "9999 9999 9999 9999";
+
+            // act & assert
+            Assert.Throws<CardNumberInvalidException>(() => creditCardService.GetCardType(cardNumber));
         }
             
     }
