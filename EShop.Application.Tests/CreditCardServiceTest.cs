@@ -5,7 +5,7 @@ namespace EShop.Application.Tests
     public class CreditCardServiceTest
     {
         [Fact]
-        public void CreditCard_LenOptimal_IsTooShort()
+        public void CreditCard_IsTooShort_ShouldThrowCardNumberTooShortException()
         {
             // arrange
             var creditCardService = new CreditCardService();
@@ -19,7 +19,7 @@ namespace EShop.Application.Tests
             
         }
         [Fact]
-        public void CreditCard_LenOptimal_IsTooLong()
+        public void CreditCard_IsTooLong_ShouldThrowCardNumberTooLongException()
         {
             // arrange
             var creditCardService = new CreditCardService();
@@ -45,6 +45,33 @@ namespace EShop.Application.Tests
 
             Assert.True(result);
         }
+        
+        [Fact]
+        public void CreditCard_ContainsChar_ShouldThrowCardNumberInvalidException()
+        {
+            var creditCardService = new CreditCardService();
+            string cardNumber = "1234abcd5678";
+            Assert.Throws<CardNumberInvalidException>(() => creditCardService.ValidateCardNumber(cardNumber));
+        }
+        
+        [Fact]
+        public void CreditCard_InvalidLuhn_IsFalse()
+        {
+            var creditCardService = new CreditCardService();
+            string cardNumber = "4111111111111112"; 
+            bool result = creditCardService.ValidateCardNumber(cardNumber);
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void CreditCard_ValidLuhn_IsTrue()
+        {
+            var creditCardService = new CreditCardService();
+            string cardNumber = "4111111111111111";
+            bool result = creditCardService.ValidateCardNumber(cardNumber);
+            Assert.True(result);
+        }
+        
         [Fact]
         public void CreditCard_MasterCard_IsTrue()
         {
