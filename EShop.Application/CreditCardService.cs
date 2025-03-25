@@ -8,7 +8,7 @@ namespace EShop.Application
         public bool ValidateCardNumber(string cardNumber)
         {
             cardNumber = cardNumber.Replace(" ", "").Replace("-", "");
-            Console.WriteLine($"Card Number Length: {cardNumber.Length} - Value: {cardNumber}"); // Debugowanie
+            Console.WriteLine($"Card Number Length: {cardNumber.Length} - Value: {cardNumber}");
 
             switch (cardNumber.Length)
             {

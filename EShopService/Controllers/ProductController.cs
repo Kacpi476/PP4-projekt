@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EShop.Application;
+using EShop.Domain.Models;
+using EShop.Domain.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,24 +11,51 @@ namespace EShopService.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        // GET: api/<ProductController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        public readonly IProductService _productService;
+
+        public ProductController(IProductService productService)
         {
-            return new string[] { "value1", "value2" };
+            _productService = productService;
+        }
+        [HttpGet]
+        public List<Product> GetAllProducts()
+        {
+            return _productService.GetAllProducts();
         }
 
         // GET api/<ProductController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Product GetProductById(int id)
         {
-            return "value";
+            return  _productService.GetProductById(id);
         }
-
-        // POST api/<ProductController>
+        
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult AddProduct(
+            [FromForm] int id,
+            [FromForm] string name,
+            [FromForm] string? ean,
+            [FromForm] decimal? price,
+            [FromForm] int? stock,
+            [FromForm] string? sku)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                return BadRequest("Product name is required.");
+            }
+
+            var product = new Product
+            {
+                Id = id,
+                Name = name,
+                ean = ean,
+                price = price,
+                stock = stock,
+                sku = sku,
+            };
+
+            _productService.AddProduct(product);
+            return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);
         }
 
         // PUT api/<ProductController>/5
